@@ -1,4 +1,5 @@
 import requests
+import string
 from bs4 import BeautifulSoup
 
 url = "https://www.nature.com/nature/articles?sort=PubDate&year=2020&page=3"
@@ -16,8 +17,7 @@ def main():
             soup = BeautifulSoup(response.content, 'html.parser')
             for a in soup.find_all('article'):
                 if a.find('span', {'class':'c-meta__type'}).text == 'News':
-                    print(a.find('a').text)
-                    print(a.find('a').get('href'))
+                    print(a.find('a').text.strip().translate(str.maketrans('', '', string.punctuation)).replace(" ", "_"))
                     article = requests.get(url_base + a.find('a').get('href'), headers={'Accept-Language': 'en-US,en;q=0.5'})
                     article_soup = BeautifulSoup(article.content, 'html.parser')
                     print("\n\n******************************************************")
