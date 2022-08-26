@@ -1,16 +1,14 @@
 import requests
+from bs4 import BeautifulSoup
 
 def main():
 
-    url = input("Input the URL:")
-    response = requests.get(url)
-    if not response:
-        print("Invalid quote resource!")
-    else:
-        try:
-            print(response.json()["content"])
-        except:
-            print("Invalid quote resource!")
+    response = requests.get(input("Input the URL:"), headers={'Accept-Language': 'en-US,en;q=0.5'})
+    try:
+        soup = BeautifulSoup(response.content, 'html.parser')
+        print({"title" : soup.find("h1").contents.pop(), "description" : soup.find("span", {'data-testid': 'plot-xl'}).contents.pop()})
+    except:
+        print("Invalid movie page!")
 
 if __name__ == "__main__":
     main()
