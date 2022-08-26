@@ -21,8 +21,11 @@ def main():
                     article = requests.get(url_base + a.find('a').get('href'), headers={'Accept-Language': 'en-US,en;q=0.5'})
                     article_soup = BeautifulSoup(article.content, 'html.parser')
                     print("\n\n******************************************************")
-                    for p in article_soup.find_all(lambda tag: tag.name == 'p' and not tag.attrs):
-                        print(p.text)
+
+                    print(article_soup.find('div', {'class':'c-article-body u-clearfix'}).text.strip().replace("\n", ""))
+
+                    # for p in article_soup.find_all(lambda tag: tag.name == 'p' and not tag.attrs):
+                    #     print(p.text)
                     print("\n\n******************************************************")
 
 
